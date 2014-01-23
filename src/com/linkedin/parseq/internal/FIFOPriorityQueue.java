@@ -80,7 +80,7 @@ public class FIFOPriorityQueue<T>
     {
       final int comp = compare(o._priority, _priority);
       return comp == 0
-          ? compare(_sequenceNumber, o._sequenceNumber)
+          ? compare(o._sequenceNumber, _sequenceNumber)
           : comp;
     }
 

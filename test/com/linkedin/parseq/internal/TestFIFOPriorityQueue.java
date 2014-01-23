@@ -41,9 +41,9 @@ public class TestFIFOPriorityQueue
     queue.add(2);
     queue.add(3);
 
-    assertEquals((Integer)1, queue.poll());
-    assertEquals((Integer)2, queue.poll());
     assertEquals((Integer)3, queue.poll());
+    assertEquals((Integer)2, queue.poll());
+    assertEquals((Integer)1, queue.poll());
     assertNull(queue.poll());
   }
 
@@ -66,17 +66,17 @@ public class TestFIFOPriorityQueue
     final FIFOPriorityQueue<Int> queue = new FIFOPriorityQueue<Int>();
     queue.add(new PrioritizableInt(-5, 1));
     queue.add(new PrioritizableInt(10, 2));
-    queue.add(new PrioritizableInt(0, 3));
+    queue.add(new PrioritizableInt(0,  3));
     queue.add(new PrioritizableInt(10, 4));
-    queue.add(new PrioritizableInt(0, 5));
+    queue.add(new PrioritizableInt(0,  5));
     queue.add(new PrioritizableInt(-5, 6));
 
-    assertEquals(2, queue.poll().getValue());
     assertEquals(4, queue.poll().getValue());
-    assertEquals(3, queue.poll().getValue());
+    assertEquals(2, queue.poll().getValue());
     assertEquals(5, queue.poll().getValue());
-    assertEquals(1, queue.poll().getValue());
+    assertEquals(3, queue.poll().getValue());
     assertEquals(6, queue.poll().getValue());
+    assertEquals(1, queue.poll().getValue());
   }
 
   @Test
