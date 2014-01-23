@@ -113,7 +113,7 @@ import java.util.concurrent.atomic.AtomicReference;
   @Override
   public boolean isFailed()
   {
-    final Result voe = _result.get();
+    final Result<T> voe = _result.get();
     return voe != null && voe._error != null;
   }
 

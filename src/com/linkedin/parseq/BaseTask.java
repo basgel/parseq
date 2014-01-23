@@ -156,7 +156,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
   @Override
   public final void contextRun()
   {
-    final State runState = transitionRun();
+    final State<T> runState = transitionRun();
     if (runState == null)
     {
       throw new IllegalStateException("contextRun called more than once!");
@@ -210,7 +210,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
   @Override
   public Trace getTrace()
   {
-    final State state = _stateRef.get();
+    final State<T> state = _stateRef.get();
     final Context context = state._context;
     if (context instanceof InternalContext)
     {
@@ -241,7 +241,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
   @Override
   public Throwable getError() throws PromiseUnresolvedException
   {
-    final State state = _stateRef.get();
+    final State<T> state = _stateRef.get();
     ensureDone(state);
     return state._error;
   }
@@ -275,7 +275,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
   {
     _promiseListeners.add(listener);
 
-    final State state = _stateRef.get();
+    final State<T> state = _stateRef.get();
     if (state._type == StateType.DONE)
       purgeListeners(state);
   }
@@ -283,7 +283,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
   @Override
   public void addTaskListener(TaskListener listener)
   {
-    State state = _stateRef.get();
+    State<T> state = _stateRef.get();
     if (state._type == StateType.DONE)
     {
       listener.onUpdate(this, buildShallowTrace(state));
@@ -306,7 +306,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
   @Override
   public boolean isFailed()
   {
-    final State state = _stateRef.get();
+    final State<T> state = _stateRef.get();
     return state._type == StateType.DONE && state._error != null;
   }
 
@@ -355,7 +355,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
     return true;
   }
 
-  private State transitionRun()
+  private State<T> transitionRun()
   {
     State<T> state;
     State<T> newState;
@@ -443,7 +443,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
     return true;
   }
 
-  private void purgeListeners(State state)
+  private void purgeListeners(State<T> state)
   {
     if (!_taskListeners.isEmpty())
     {
@@ -476,7 +476,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
     }
   }
 
-  private void notifyTaskListeners(State state)
+  private void notifyTaskListeners(State<T> state)
   {
     if (!_taskListeners.isEmpty())
     {
@@ -495,7 +495,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
     }
   }
 
-  private ShallowTrace buildShallowTrace(State state)
+  private ShallowTrace buildShallowTrace(State<T> state)
   {
     // We defer computation of the string value representation until it is
     // needed. This adds a cost to each retrieval of a shallow trace, but avoids
@@ -520,7 +520,7 @@ public abstract class BaseTask<T> implements Task<T>, Promise<T>
     return state._trace;
   }
 
-  private void ensureDone(State state) throws PromiseUnresolvedException
+  private void ensureDone(State<T> state) throws PromiseUnresolvedException
   {
     if (state._type != StateType.DONE)
     {
